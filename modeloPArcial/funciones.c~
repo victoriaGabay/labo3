@@ -1,0 +1,17 @@
+#include "stdlib.h"
+#include "stdio.h"
+
+
+char *getFileName(int nroPanel)
+{
+	switch(nroPanel){
+		case 1:
+			return FILE_1; break;
+		case 2:
+			return FILE_2; break;
+		case 3: 
+			return FILE_3; break;	
+	
+	}
+	return "";
+}

@@ -1,0 +1,53 @@
+#include "stdlib.h"
+#include "stdio.h"
+#include "semaforos.h"
+#include "archivos.h"
+#include "funciones.h"
+#include "definiciones.h"
+#include "time.h"
+#include "string.h"
+#include "unistd.h"
+#include "semaforos.h"
+
+int main(int incant, char *szarg[])
+{
+	int importe = 0, i;
+	int cheque, cajero, depositos, espera;
+	char line[100];
+	char filename[15];	
+	int idSemaforo = creo_semaforo();	
+
+	srand(time(NULL));
+	cajero = obtenerNumeroAleatorio(1, 3);
+ 	printf("Cajero: %d \n",cajero );
+
+	while(1)
+	{
+		espera_semaforo(idSemaforo);
+
+		espera = obtenerNumeroAleatorio(1000, 2500);
+		depositos = obtenerNumeroAleatorio(10, 20);
+		
+		memset(filename, 0x00, sizeof(filename));	
+		memcpy(filename, getFileName(cajero), strlen(getFileName(cajero)));		
+	
+		for(i = 0; i < depositos; i++)
+		{
+			importe = obtenerNumeroAleatorio(DESDE, HASTA);
+			cheque = obtenerNumeroAleatorio(0, 1);
+			memset(line, 0x00, 100);
+			sprintf(line, OUT_FORMAT, importe, cheque);
+
+			openFile(filename, "a");
+			writeFile(line);
+			closeFile();
+		}
+		
+		levanta_semaforo(idSemaforo);
+
+		usleep(espera);
+	}
+
+	return 0;
+}
+

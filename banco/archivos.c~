@@ -1,0 +1,77 @@
+#include "archivos.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+
+#define LEN 100
+
+FILE *file;
+
+char* readFile(){
+	char *line;
+
+	if(file != NULL) 
+	{		
+		fgets(line, LEN, file);
+	}
+
+	return line;
+
+} 
+
+void writeFile(char line[]){
+
+	if(file != NULL) 
+	{
+		fprintf(file, line);
+	}	
+}
+
+void openFile(char filename[], char mode[]){
+	file = fopen(filename, mode);
+}
+
+void closeFile()
+{
+
+	if(file != NULL) {
+	fclose(file);}
+}
+
+char *getLastLine()
+{
+	char *line;
+	if(file != NULL)
+	{
+		while(!feof(file))
+		{
+			fgets(line, LEN, file);
+		}
+	}
+	else
+	{
+		printf("Archivo nulo \n");
+	}
+	
+	return line;
+}
+
+int isFeof()
+{
+	if(file == NULL)
+	{
+		return 1;
+	}
+	return feof(file);
+}
+
+void renameFile(char *oldName, char *newName)
+{
+	if(file != NULL)
+	{
+		rename(oldName, newName);
+	}
+}
+
+
+

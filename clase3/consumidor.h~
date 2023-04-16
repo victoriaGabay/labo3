@@ -1,0 +1,6 @@
+#ifndef _CONSUMIDOR
+#define _CONSUMIDOR
+
+void producir(char *filename);
+
+#endif

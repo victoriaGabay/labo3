@@ -1,0 +1,6 @@
+#ifndef _ARCHIVOS
+#define _ARCHIVOS
+
+void readFile(char filename[]);
+
+#endif
