@@ -11,5 +11,6 @@
 #define HASTA 10
 #define ESPERA 100000
 #define OUT_FORMAT "10%02d\t%s\t%d\n"
+#define LEN 100
 
 #endif

@@ -11,30 +11,39 @@ int main(int incant, char *szarg[])
 {
 	int idSemaforo = creo_semaforo();
 	int panel = 0;
+	char mensaje[LEN] = "default";
 	char *filename;
-	char mensaje[1000] = "default";
 	char *line;
 
 	if(szarg[1])
 	{
 		panel = atoi(szarg[1]);
 	}
+	
+	line = (char*)malloc((LEN+1)*sizeof(char));
+	memset(line, 0x00, sizeof(line));
+	filename = (char*)malloc((LEN+1)*sizeof(char));
+	memset(filename, 0x00, sizeof(filename));
+	strcpy(filename, getFileName(panel));
 
     	while (1)
     	{	
         	espera_semaforo(idSemaforo);
 
-		filename = getFileName(panel);
-
-		openFile(filename, "r");
+		while(openFile(filename, "r") == 0)
+		{
+			printf("No se pudo abrir el archivo \n");
+			levanta_semaforo(idSemaforo);
+			usleep(1000);
+			espera_semaforo(idSemaforo);
+		}
 
 		while(!isFeof())
 		{
-			line = readFile();
+			strcpy(line,readFile());
 
 			if(strcmp(line, mensaje) != 0)
 			{
-				memset(mensaje, 0x00, sizeof(mensaje));
 			 	memcpy(mensaje, line, strlen(line));
 			}		
 		}
@@ -47,5 +56,8 @@ int main(int incant, char *szarg[])
 		
 		usleep(ESPERA);
 	}
+
+	free(line);
+	free(filename);
 	return 0;
 }

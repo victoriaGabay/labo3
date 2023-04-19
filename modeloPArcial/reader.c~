@@ -4,18 +4,34 @@
 #include "archivos.h"
 #include "string.h"
 #include "funciones.h"
+#include "definiciones.h"
+#include "unistd.h"
 
-void mostrarMensaje(int nroPanel)
+int mostrarMensaje(int nroPanel)
 {
 	char *line;
-	char *filename = getFileName(nroPanel);
+	char *filename;
+	
+	line = (char*)malloc((LEN+1)*sizeof(char));
+	memset(line, 0x00, sizeof(line));
+	
+	filename = (char*)malloc((LEN+1)*sizeof(char));
+	memset(filename, 0x00, sizeof(filename));
+	printf("hola \n");
+	strcpy(filename, getFileName(nroPanel));	
 
-	openFile(filename, "r");
+	if(!openFile(filename, "r")){
+		return 0;
+	}
 	while(!isFeof())
 	{
 		line = readFile();
-		printf("Mensaje del panel %d: %s", nroPanel, line);
+		printf("Mensaje del panel %d: %s \n", nroPanel, line);
 	}
+
+	free(filename);
+
+	return 1;
 }
 
 

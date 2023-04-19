@@ -9,7 +9,7 @@
 #define VERDE 1
 #define DESDE 0
 #define HASTA 10
-#define ESPERA 10000
+#define ESPERA 100000
 #define OUT_FORMAT "10%02d\t%s\t%d\n"
 
 #endif

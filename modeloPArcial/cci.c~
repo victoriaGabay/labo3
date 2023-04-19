@@ -5,15 +5,16 @@
 #include "definiciones.h"
 #include "reader.h"
 #include "unistd.h"
+#include "string.h"
 
 int main(int incant, char *szarg[])
 {
-	int option = 0;
+	int option = 0, sucess = 0;
 	int nroPanel = 0;
-	char mensaje[1000000];
+	char *mensaje;
 	int idSemaforo = creo_semaforo();
 	inicia_semaforo(idSemaforo, VERDE);
-	printf("Id semaforo %d \n", idSemaforo);
+
 	while(1)
 	{
 		printf("Ingrese 1 para Leer panel o 2 para escribir panel");
@@ -26,17 +27,22 @@ int main(int incant, char *szarg[])
 				scanf("%d", &nroPanel);
 				
 				espera_semaforo(idSemaforo);
-				mostrarMensaje(nroPanel);
+				sucess = mostrarMensaje(nroPanel);
+				if(!sucess) {
+					printf("Hubo un problema al acceder al archivo");
+				}
 				levanta_semaforo(idSemaforo);
 
 				break;
 			case 2: 
 				nroPanel = 0;
 
+				mensaje = (char*)malloc(LEN*sizeof(char));
+				memset(mensaje, 0x00, sizeof(mensaje));
+
 				printf("\n Ingrese el mensaje de panel: ");
 				scanf("%s", mensaje);
-
-			
+				
 				printf("Ingrese el numero de panel: ");
 				scanf("%d", &nroPanel);
 
@@ -50,5 +56,7 @@ int main(int incant, char *szarg[])
 
 		usleep(10);
 	}
+
+	free(mensaje);
 	return 0;
 }

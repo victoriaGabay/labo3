@@ -9,10 +9,10 @@ FILE *file;
 
 char* readFile(){
 	char line[LEN + 1];
+	memset(line, 0x00, sizeof(line));
 	
 	if(file != NULL) 
 	{
-		memset(line, 0x00, LEN);
 		fscanf(file, "%s \n", line);
 	}
 
@@ -28,8 +28,8 @@ void writeFile(char line[]){
 	}	
 }
 
-void openFile(char filename[], char mode[]){
-	file = fopen(filename, mode);
+int openFile(char filename[], char mode[]){
+	return (file = fopen(filename, mode)) != 0;
 }
 
 void closeFile()
@@ -42,6 +42,8 @@ void closeFile()
 char* getLastLine()
 {
 	char line[LEN + 1];
+	memset(line, 0x00, sizeof(line));
+
 	if(file != NULL)
 	{
 		while(!feof(file))
