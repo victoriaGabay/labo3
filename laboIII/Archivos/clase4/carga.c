@@ -1,0 +1,41 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include "archivos.h"
+#include "string.h"
+#include "semaforos.h"
+
+struct DatosVuelos {
+	char *nombre;
+ 	int  vuelo;
+	char *destino;
+} datos;
+
+void escribirArchivo();
+
+int main(int incant, char *szarg[])
+{
+
+	int semaforo = creo_semaforo();
+	datos.vuelo = 1;
+
+	printf("Hola");
+	datos.nombre = "Pepe";
+	datos.destino = "BSAS";
+	
+	espera_semaforo(semaforo);	
+	escribirArchivo();
+	levanta_semaforo(semaforo);
+
+	printf("Fin");
+}
+
+void escribirArchivo() 
+{	
+	char line[200];
+	memset(line, 0x00, sizeof(line));
+	sprintf(line , "10%02d\t%s\t%s", datos.vuelo, datos.nombre, datos.destino);
+	
+	openFile("lote.dat", "a");
+	writeFile(line);
+	closeFile();
+}

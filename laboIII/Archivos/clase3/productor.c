@@ -1,0 +1,32 @@
+#include "archivos.h"
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#include "productor.h"
+
+void producir(char *filename){
+	int i = 1, lastNumberInt = 1;
+	char line[100], lastNumber[4];
+	char* lastLine;
+
+	openFile(filename, "r");
+
+	lastLine = getLastLine();
+	memcpy(lastNumber, &lastLine[9], 4);
+	
+	closeFile();
+	if(lastNumber != NULL)
+	{
+		lastNumberInt = atoi(lastNumber);
+	}
+	
+	openFile(filename, "a");
+	for(i = lastNumberInt + 1; i < (lastNumberInt + 11); i++)
+	{
+		sprintf(line, "PRODUCTO-%02d\n", i);
+		writeFile(line);
+	}
+	
+	closeFile();
+}
+

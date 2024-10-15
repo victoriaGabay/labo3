@@ -1,0 +1,20 @@
+#include "clave.h"
+#include <sys/ipc.h>
+#include "stdio.h"
+#include "stdlib.h"
+
+key_t creoClave(int r_clave)
+{
+	key_t clave;
+	
+	clave = ftok("/bin/ls", r_clave);
+	if(clave == (key_t)-1)
+	{
+		printf("No fue posible generar una clave");
+		return 0;	
+	}	
+	
+	return clave;
+}
+
+

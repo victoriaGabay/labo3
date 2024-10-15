@@ -1,0 +1,62 @@
+void *handlePlayersThread(void *param)
+{
+	jugador *j = (jugador *)param;
+	int jugadorEquipo1 = 0, fueGol = 0;
+	int decidirSiFueGol = 0;	
+	char mens[5];
+	mensaje msg;
+
+	printf("Jugador %d listo.\n", j->id);
+	while(1)
+	{
+		printf("Jugador %d.\n", j->id);
+		if(j->id == MSG_JUG_EQUIPO_2)
+		{
+			pthread_mutex_lock(&mutex);
+			recibirMensaje(idColaMensajes, j->id, &msg, 0); 
+			pthread_mutex_unlock(&mutex);
+
+			if(msg.event == EVT_PATEA)
+			{
+				decidirSiFueGol = obtenerNumeroAleatorio(0, 1);
+				sscanf(msg.msg, "%d", &jugadorEquipo1);
+				if(decidirSiFueGol)
+				{
+					printf("El %s del equipo 1 metio gol. \n", getTipoJug(jugadorEquipo1));
+				}
+				else
+				{
+					printf("El tiro del %s equipo 1 fue fuera. \n", getTipoJug(jugadorEquipo1));
+				}
+				memset(mens, 0x00, sizeof(mens));
+				sprintf(mens, "%d", decidirSiFueGol); 
+				printf("Le voy a mandar mensaje a %d \n", j->id);
+				
+				pthread_mutex_lock(&mutex);
+				enviarMensaje(idColaMensajes, msg.rte, j->id, EVT_RESULTADO_TIRO, mens);
+
+				*j->puedeTirar = 1;
+				*j->alguienEstaPateando = 0;
+				pthread_mutex_unlock(&mutex);
+			}
+		}
+		else
+		{
+			if(*j->puedeTirar)
+			{
+				tirarAlArco(j);
+			}
+			else
+			{
+				// Hacer algo si no puede tirar
+			}
+		}
+
+		if(*j->golesEquipo >= 5)
+		{
+			break;
+		}
+		usleep(100);
+	}
+	pthread_exit((void *)"Listo");
+}

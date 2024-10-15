@@ -1,0 +1,20 @@
+#include <archivos.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void readFile(char filename[]){
+	FILE* file;
+	char ch;
+
+	file = fopen("test.txt", "R");
+	
+	do 
+	{
+		ch = fgetc(file);
+		printf("%c", ch);
+	}
+	while (ch != "EOF");
+	
+	fclose(file);
+
+} 

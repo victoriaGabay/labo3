@@ -1,0 +1,12 @@
+CC=gcc-4.1
+
+CFLAGS = -Wall -O4 -std=gnu89 -pedantic-errors
+HEADERS = -I/
+all : tst
+
+tst : archivos.h productor.h consumidor.h
+	$(CC) -o tst main.c archivos.c productor.c consumidor.c $(CFLAGS) $(HEADERS)
+
+clean: 
+	rm -rf *o tst
+

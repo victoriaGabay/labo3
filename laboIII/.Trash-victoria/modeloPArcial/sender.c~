@@ -1,0 +1,35 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include "sender.h"
+#include "archivos.h"
+#include "string.h"
+#include "funciones.h"
+
+void mandarMensaje(int nroPanel, char mensaje[])
+{
+	char *filename = getFileName(nroPanel);
+	char *line;
+	int msgChanged = 0;	
+	
+
+	openFile(filename, "r");
+
+	while(!isFeof()) {
+
+		line = readFile();
+		printf("Line %s: , mensaje %s: ", mensaje, line);
+		msgChanged = strcmp(mensaje, line);			
+	}
+
+	closeFile();	
+
+	if(msgChanged != 0)
+	 {
+		printf("cambios");
+		openFile(filename, "w");
+		writeFile(mensaje);
+		closeFile();
+	}
+}
+
+

@@ -1,0 +1,5 @@
+todo lo que es char*:
+	- ((char*)malloc((LEN+1)*sizeof(char))
+	- memset(str, 0x00, sizeof(str));
+	- PARA COPIAR STRS: strcpy(filename, getFileName(nroPanel);	
+	- free al final dela rchivo,
